@@ -12,11 +12,11 @@ const test1: TestCase = message => {
 const test2: TestCase = message => {
    const eventhub = new EventHub();
    let called = false;
-   eventhub.on('xxx', (params) => {
+   eventhub.on('testEvent', (params) => {
       called = true;
-      console.assert(params === '呵呵')
+      console.assert(params === 'redmi note8pro 新品发布')
    });
-   eventhub.emit('xxx', '呵呵');
+   eventhub.emit('testEvent', 'redmi note8pro 新品发布');
    setTimeout(() => {
       console.assert(called === true);
       console.log(message)
@@ -25,15 +25,15 @@ const test2: TestCase = message => {
 
 const test3: TestCase = message => {
    const eventhub = new EventHub();
-   let called2 = false;
+   let called = false;
    const fn1 = () => {
-      called2 = true;
+      called = true;
    }
-   eventhub.on('xxx', fn1);
-   eventhub.off('xxx', fn1);
-   eventhub.emit('xxx');
+   eventhub.on('testEvent', fn1);
+   eventhub.off('testEvent', fn1);
+   eventhub.emit('testEvent');
    setTimeout(() => {
-      console.assert(called2 === false);
+      console.assert(called === false);
       console.log(message)
    }, 2000)
 }

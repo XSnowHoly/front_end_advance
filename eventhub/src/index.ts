@@ -20,6 +20,7 @@ class EventHub {
 
   // 取消订阅的事件
   off(eventName: string, fn: Event) {
+    // 检查需要取消的事件是否存在, 如果存在则把该事件从this.cache[eventName]数组里面移除
     let index = indexOf(this.cache[eventName], fn);
     index !== -1 && this.cache[eventName].splice(index, 1);
   }
@@ -32,7 +33,7 @@ export default EventHub;
  * @param array 
  * @param item 
  */
-function indexOf(array: Array<Event> | undefined, item: Event) {
+function indexOf(array: Array<Event> | undefined, item: unknown) {
   if(array === undefined) return -1;
   let index = -1;
   for(let i = 0; i<array.length; i++) {
