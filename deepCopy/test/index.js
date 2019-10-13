@@ -39,5 +39,14 @@ describe('deepClone', () => {
             assert(a.skill !== b.skill);
             assert(a.skill.name === b.skill.name);
         });
+        it('能够复制数组对象', () => {
+            let arr = [['唱'], ['跳'], ['Rap']];
+            let arr2 = deepClone(arr);
+            assert(arr !== arr2);
+            assert(arr[0] !== arr2[0]);
+            assert(arr[1] !== arr2[1]);
+            assert(arr[2] !== arr2[2]);
+            assert.deepEqual(arr, arr2);
+        });
     });
 });
