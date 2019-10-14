@@ -9,7 +9,12 @@ function deepClone(source) {
         let dist;
         if (source instanceof Array) {
             dist = new Array();
-        } else {
+        } else if(source instanceof Function) {
+            dist = function () {
+                return source.call(this, ...arguments);
+            }
+        }
+         else {
             dist = new Object();
         }
         for (const key in source) {
