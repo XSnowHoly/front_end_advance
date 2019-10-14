@@ -2,9 +2,6 @@ function deepClone(source) {
     if (null === source) {
         return null;
     }
-    if (typeof source !== 'object') {
-        return source;
-    }
     if (source instanceof Object) {
         let dist;
         if (source instanceof Array) {
@@ -24,6 +21,7 @@ function deepClone(source) {
         }
         return dist;
     }
+    return source;
 }
 
 module.exports = deepClone;

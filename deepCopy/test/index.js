@@ -54,7 +54,6 @@ describe('deepClone', () => {
             }
             a.xxx = { yyy: { zzz: 1 } }
             const a2  = deepClone(a);
-            console.log(a === a2)
             assert(a !== a2);
             assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
             assert(a.xxx.yyy !== a2.xxx.yyy);
