@@ -53,20 +53,46 @@ describe('deepClone', () => {
                 return x + y;
             }
             a.xxx = { yyy: { zzz: 1 } }
-            const a2  = deepClone(a);
+            const a2 = deepClone(a);
             assert(a !== a2);
             assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
             assert(a.xxx.yyy !== a2.xxx.yyy);
             assert(a.xxx !== a2.xxx);
-            assert(a(1,2) === a2(1,2));
+            assert(a(1, 2) === a2(1, 2));
         });
         it('能够复制环对象', () => {
-            const a = { name: 'ckx'};
+            const a = { name: 'ckx' };
             a.self = a;
             const a2 = deepClone(a);
             assert(a2 !== a);
             assert(a2.name === a.name);
             assert(a2.self !== a.self);
+        });
+        xit('不会爆栈', () => {
+            let a = { child: null }
+            let b = a;
+            for (let i = 0; i < 5000; i++) {
+                b.child = {
+                    child: null
+                };
+                b = b.child;
+            }
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.child !== a2.child);
+        });
+        it('可以复制正则对象', () => {
+            let a = /hi\+d/gi;
+            a.xxx = {
+                yyy: { zzz: '这是一个正则' }
+            }
+            let a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.source === a2.source);
+            assert(a.flags === a2.flags);
+            assert(a.xxx !== a2.xxx);
+            assert(a.xxx.yyy !== a2.xxx.yyy);
+            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
         })
     });
 });
