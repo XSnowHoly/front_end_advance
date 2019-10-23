@@ -17,6 +17,8 @@ function deepClone(source) {
                 }
             } else if (source instanceof RegExp) {
                 dist = new RegExp(source.source, source.flags);
+            } else if (source instanceof Date) {
+                dist = new Date(source);
             }
             else {
                 dist = new Object();

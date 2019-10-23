@@ -94,5 +94,86 @@ describe('deepClone', () => {
             assert(a.xxx.yyy !== a2.xxx.yyy);
             assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
         })
+        it('可以复制日期', () => {
+            let a = new Date();
+            a.xxx = {
+                yyy: { zzz: '这是一个日期' }
+            }
+            let a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.getTime() === a2.getTime());
+            assert(a.xxx !== a2.xxx);
+            assert(a.xxx.yyy !== a2.xxx.yyy);
+            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+        })
+        it('自动跳过原型属性', () => {
+            let a = Object.create({ name: 'a' })
+            a.xxx = {
+                yyy: { zzz: '这是一个有原型属性name的对象' }
+            }
+            let a2 = deepClone(a);
+            assert.isFalse('name' in a2);
+            assert(a !== a2);
+            assert(a.xxx !== a2.xxx);
+            assert(a.xxx.yyy !== a2.xxx.yyy);
+            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+        })
+        it('可以复制很复杂的对象', () => {
+            const a = {
+                n: NaN,
+                n2: Infinity,
+                s: '',
+                bool: false,
+                null: null,
+                u: undefined,
+                sym: Symbol(),
+                o: {
+                    n: NaN,
+                    n2: Infinity,
+                    s: '',
+                    bool: false,
+                    null: null,
+                    u: undefined,
+                    sym: Symbol(),
+                },
+                array: [
+                    {
+                        n: NaN,
+                        n2: Infinity,
+                        s: '',
+                        bool: false,
+                        null: null,
+                        u: undefined,
+                        sym: Symbol(),
+                    },
+                ],
+                fn: function() {
+                    return 'fn';
+                },
+                date: new Date(),
+                reg: /test/ig
+            }
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.o !== a2.o);
+            assert(a.array !== a2.array);
+            assert(a.fn !== a2.fn);
+            assert(a.date !== a2.date);
+            assert(a.reg !== a2.reg);
+            assert.isNaN(a2.n);
+            assert(a.n2 === a2.n2)
+            assert(a.s === a2.s)
+            assert(a.bool === a2.bool)
+            assert(a.null === a2.null)
+            assert(a.u === a2.u)
+            assert(a.sym === a2.sym)
+            assert.isNaN(a2.o.n);
+            assert(a.o.n2 === a2.o.n2)
+            assert(a.o.s === a2.o.s)
+            assert(a.o.bool === a2.o.bool)
+            assert(a.o.null === a2.o.null)
+            assert(a.o.u === a2.o.u)
+            assert(a.o.sym === a2.o.sym)
+        })
     });
 });
