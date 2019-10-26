@@ -46,4 +46,31 @@ describe("手写bind", () => {
     assert(newFn()[1] === 123)
     assert(newFn(345)[2] === 345)
   })
+  it("bind 支持new之前绑定变量", () => {
+    let fn = function (p1, p2) {
+      this.p1 = p1;
+      this.p2 = p2;
+    }
+    let newFn = fn.bind2(null, 123, 345);
+    let object = new newFn();
+    console.log(object)
+    assert(object.p1 === 123);
+    assert(object.p2 === 345);
+  })
+  it("bind的函数new出来的对象原型链是正确的", () => {
+    let fn = function (p1, p2) {
+      this.p1 = p1;
+      this.p2 = p2;
+    }
+    let sayHi = function () {
+      console.log('hi')
+    }
+    fn.prototype.sayHi = sayHi;
+    let newFn = fn.bind2(null, 123, 346);
+    let object = new newFn();
+    // console.log(object.prototype)
+    assert(fn.prototype.isPrototypeOf(object))
+    console.log(object.construction)
+    assert.isFunction(object.sayHi)
+  })
 });
